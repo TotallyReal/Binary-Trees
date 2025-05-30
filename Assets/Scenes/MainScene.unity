@@ -4689,6 +4689,7 @@ MonoBehaviour:
   frame: {fileID: 387373895}
   playButtonText: {fileID: 442625598}
   gameManager: {fileID: 872316895}
+  cameraZoom: {fileID: 519420033}
 --- !u!1 &361704882
 GameObject:
   m_ObjectHideFlags: 0
@@ -6488,6 +6489,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6613,6 +6615,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d2b8222cc8af324cb5e8fed95268ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &528291594
 GameObject:
   m_ObjectHideFlags: 0
@@ -12540,9 +12554,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 779432475}
-        m_TargetAssemblyTypeName: TimeCounter, Assembly-CSharp
-        m_MethodName: Pause
+      - m_Target: {fileID: 872316895}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PauseTime
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18736,6 +18750,10 @@ PrefabInstance:
       propertyPath: mouseLogs
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1101106199286370853, guid: dee206218b7315a47a2ef70f02a4c92a, type: 3}
+      propertyPath: mouseSelectReference
+      value: 
+      objectReference: {fileID: 7129214441809845342, guid: 7bdb139b5826cf24ea7ae30108481b42, type: 3}
     - target: {fileID: 8005514497617540426, guid: dee206218b7315a47a2ef70f02a4c92a, type: 3}
       propertyPath: dimension
       value: 1

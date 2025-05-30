@@ -14,8 +14,11 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI playButtonText;
     [SerializeField]
     private GameManager gameManager;
+    [SerializeField]
+    private CameraZoom cameraZoom;
 
     private bool firstGame = true;
+
 
     public void HideMenu()
     {
@@ -27,6 +30,7 @@ public class UIManager : MonoBehaviour
         {
             gameManager.Resume();
         }
+        cameraZoom.enabled = true;
         frame.DOScale(0, 1.0f)
             .SetEase(Ease.InBack)
             .OnComplete(() => { playButtonText.text = "Resume"; });
@@ -34,6 +38,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowMenu()
     {
+        cameraZoom.enabled = false;
         frame.DOScale(1, 1.0f).SetEase(Ease.OutBack);
     }
 
