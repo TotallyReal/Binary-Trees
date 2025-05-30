@@ -26,10 +26,8 @@ This is a very early version — just the bare bones for now:
 
 ## 🔗 Play the Game
 
-If you’re viewing this from GitHub:
-
 - **Game Page**: [Play it here](https://totallyreal.github.io/Binary-Trees/webgl/)
-- **Project Page**: [Main repository site](https://totallyreal.github.io/Binary-Trees/)
+- **Project Page**: [Main repository site](https://github.com/TotallyReal/Binary-Trees),  [Github Pages site](https://totallyreal.github.io/Binary-Trees/)
 
 ## 💬 Feedback
 
