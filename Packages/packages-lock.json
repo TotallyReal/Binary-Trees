@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.totallyreal.mousecontrol": {
-      "version": "file:C:/Users/eofir/Unity Projects/Nets/Assets/CustomPackages/MouseControl",
+      "version": "file:C:/Users/eofir/Unity Projects/Utilities/Assets/MouseControl",
       "depth": 0,
       "source": "local",
       "dependencies": {

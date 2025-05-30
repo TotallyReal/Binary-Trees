@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TreeGenerator : MonoBehaviour
@@ -111,6 +112,80 @@ public class TreeGenerator : MonoBehaviour
         indexToData.Add(currentIndex, data);
 
         return (index, position);
+    }
+
+    #endregion
+
+
+    #region ============= Add Node =============
+    [Header("Ordered Nodes")]
+
+    [SerializeField]
+    private string nodeIndices = "0,1,2,3";
+
+    [ButtonInstead(nameof(AddNode), "Add Ordered Nodes")]
+    public bool _AddNode;
+
+    private void AddNode()
+    {        
+        treeManager.AddOrdered(nodeIndices.Split(',').Select(int.Parse).ToArray());
+    }
+
+    [SerializeField]
+    private int sizeOrderedTree = 31;
+
+    [ButtonInstead(nameof(CreateOrderedTree), "Create Ordered Tree")]
+    public bool _CreateOrderedTree;
+
+
+    private void CreateOrderedTree()
+    {
+        int[] indices = new int[sizeOrderedTree];
+        int arrayIndex = 0;
+
+
+        void CreateOrderedTree(int fromIndex, int toIndex)
+        {
+            if (fromIndex >= toIndex)
+                return;
+
+            if (fromIndex + 1 == toIndex)
+            {
+                indices[arrayIndex++] = fromIndex;
+                return;
+            }
+
+            if (fromIndex + 2 == toIndex)
+            {
+                indices[arrayIndex++] = fromIndex;
+                indices[arrayIndex++] = fromIndex+1;
+                return;
+            }
+
+            int midIndex = Mathf.FloorToInt((fromIndex + toIndex) / 2);
+            indices[arrayIndex++] = midIndex;
+            CreateOrderedTree(fromIndex, midIndex);
+            CreateOrderedTree(midIndex + 1, toIndex);
+        }
+
+        CreateOrderedTree(1, sizeOrderedTree + 1);
+
+        treeManager.ClearTree();
+        treeManager.AddOrdered(indices);
+
+    }
+
+    #endregion
+
+    #region ============= Clear Tree =============
+    [Header("Clear Tree")]
+
+    [ButtonInstead(nameof(ClearTree), "Clear Tree")]
+    public bool _ClearTree;
+
+    private void ClearTree()
+    {
+        treeManager.ClearTree();
     }
 
     #endregion

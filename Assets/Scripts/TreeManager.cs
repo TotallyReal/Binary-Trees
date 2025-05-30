@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 [Serializable]
-public struct NodeData
+public class NodeData
 {
     public static NodeData Empty = new NodeData()
     {
@@ -21,9 +21,14 @@ public struct NodeData
     public int parent;
     public int leftChild;
     public int rightChild;
+
+    override public string ToString()
+    {
+        return $"Node {index}->({leftChild},{rightChild})";
+    }
 }
 
-public class TreeManager : MonoBehaviour
+public class TreeManager : MonoBehaviour, TreeViewer
 {
 
     private const int LEFT = 0;
@@ -59,20 +64,27 @@ public class TreeManager : MonoBehaviour
     Dictionary<int, Node> indexToNode = new Dictionary<int, Node>();
 
 
-    private void Awake()
+    // Start is called before the first frame update
+    void Awake()
     {
         mouseEvent = (mouseEvent == null) ? DefaultMouseTypeEvent.standard : mouseEvent;
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
         Dictionary<int, NodeData> treeData = new Dictionary<int, NodeData>();
         foreach (NodeData nodeData in nodesData)
         {
             treeData[nodeData.index] = nodeData;
         }
         GenerateTree(treeData, root);
+    }
+
+    public int GetRoot()
+    {
+        return root;
+    }
+
+    public NodeData GetNode(int index)
+    {
+        return indexToData[index];
     }
 
     #region =================== Rotation ===================
@@ -97,15 +109,17 @@ public class TreeManager : MonoBehaviour
         if (node == null)
             return;
         
-        if (!inRotation && node.Index != root)
+        if (!inRotation && node.GetIndex() != root)
         {
-            rotationData = CreateRotationData(node.Index);
+            rotationData = CreateRotationData(node.GetIndex());
         }
     }
 
 
     private bool inRotation = false;
     private RotationData rotationData;
+
+    public event EventHandler<TreeViewer> OnTreeChanged; 
 
     private RotationData CreateRotationData(int index)
     {
@@ -215,6 +229,7 @@ public class TreeManager : MonoBehaviour
                         root = rotationData.childIndex;
 
                     inRotation = false;
+                    OnTreeChanged?.Invoke(this, this);
                 });
 
         return rotationData;
@@ -265,6 +280,9 @@ public class TreeManager : MonoBehaviour
             NodeData childData = indexToData[childIndex];
             Node childNode = indexToNode[childIndex];
             Edge childEdge = childNode.GetEdgeToParent();
+            SetEdgeWidth(childEdge, leftSide);
+
+
             childEdge.SetFollowPosition(Edge.Side.FROM_POSITION, childNode.transform);
 
             if (parentIndex == -1)
@@ -275,6 +293,7 @@ public class TreeManager : MonoBehaviour
 
             NodeData parentData = indexToData[parentIndex];
             Node parentNode = indexToNode[parentIndex];
+            parentNode.gameObject.name = parentData.ToString();
 
             childEdge.SetFollowPosition(Edge.Side.TO_POSITION, parentNode.transform);
             childEdge.SetColor(Edge.Side.TO_POSITION, TreeManager.edgeColors[leftSide ? LEFT : RIGHT]);
@@ -320,7 +339,7 @@ public class TreeManager : MonoBehaviour
 
     #region =================== Tree GameObjects generation ===================
 
-    private void GenerateSubTree(int index, Node parent, bool left)
+    private void GenerateSubTree(int index, int parentIndex, bool left)
     {
         if (index == -1)
             return;
@@ -330,22 +349,10 @@ public class TreeManager : MonoBehaviour
             throw new Exception($"NodeData for {index} was not generated properly.");
         }
 
-        Node node = Instantiate(nodePrefab, transform);
-        node.gameObject.name = $"Node {data.index}->({data.leftChild},{data.rightChild})";
-        node.SetLabel("" + data.index);
+        GenerateChild(parentIndex, left, index);
 
-        nodes.Add(node);
-        indexToNode.Add(data.index, node);
-        node.SetData(data);
-
-        Edge edge = node.GetEdgeToParent();
-
-        edge.SetFollowPosition(Edge.Side.TO_POSITION, (parent != null ? parent : node).transform);
-        edge.SetColor(Edge.Side.TO_POSITION, edgeColors[left ? LEFT : RIGHT]);
-        edge.UpdateEdge();
-
-        GenerateSubTree(data.leftChild, node, true);
-        GenerateSubTree(data.rightChild, node, false);
+        GenerateSubTree(data.leftChild, index, true);
+        GenerateSubTree(data.rightChild, index, false);
     }
 
     public void GenerateTree(Dictionary<int, NodeData> treeData, int root)
@@ -376,9 +383,109 @@ public class TreeManager : MonoBehaviour
         }
 
         indexToNode.Add(-1, null);
-        GenerateSubTree(root, null, true);
+        GenerateSubTree(root, -1, true);
 
         UpdatePositions();
+    }
+
+    private void GenerateChild(int parentIndex, bool left, int childIndex)
+    {
+
+        NodeData nodeData = new NodeData()
+        {
+            index = childIndex,
+            parent = parentIndex,
+            leftChild = -1,
+            rightChild = -1,
+        };
+
+
+        Node node = Instantiate(nodePrefab, transform);
+        node.gameObject.name = nodeData.ToString();
+        node.SetLabel("" + childIndex);
+        node.SetIndex(childIndex);
+
+        nodes.Add(node);
+        indexToNode[childIndex] = node;
+        nodesData.Add(nodeData);
+        indexToData[childIndex] = nodeData;
+
+        Edge edge = node.GetEdgeToParent();
+
+        if (parentIndex != -1)
+        {
+            NodeData parentData = indexToData[parentIndex];
+            if (left)
+                parentData.leftChild = childIndex;
+            else
+                parentData.rightChild = childIndex;
+            indexToData[parentIndex] = parentData;
+            Node parentNode = indexToNode[parentIndex];
+
+            parentNode.gameObject.name = parentData.ToString();
+            edge.SetFollowPosition(Edge.Side.TO_POSITION, parentNode.transform);
+            SetEdgeWidth(edge, left);
+        } else
+        {
+            edge.SetFollowPosition(Edge.Side.TO_POSITION, node.transform);
+            root = childIndex;
+        }
+        edge.SetColor(Edge.Side.TO_POSITION, edgeColors[left ? LEFT : RIGHT]);
+        edge.UpdateEdge();
+    }
+
+    static private void SetEdgeWidth(Edge edge, bool left)
+    {
+        LineRenderer lineRenderer = edge.GetComponent<LineRenderer>();
+        if (left)
+        {
+            lineRenderer.startWidth = 0.2f;
+            lineRenderer.endWidth = 0.9f;
+        }
+        else
+        {
+            lineRenderer.startWidth = 0.9f;
+            lineRenderer.endWidth = 0.2f;
+        }
+    }
+
+    public void AddOrdered(params int[] indices)
+    {
+
+        if (indices.Length == 0)
+            return;
+
+        foreach (int index in indices)
+        {
+            if (indexToData.ContainsKey(index))
+            {
+                throw new Exception($"Tree already has index {index}");
+            }
+
+            int parentIndex = -1;
+            int childIndex = root;
+            while (childIndex > -1)
+            {
+                parentIndex = childIndex;
+                childIndex = (index < childIndex) ? indexToData[childIndex].leftChild : indexToData[childIndex].rightChild;
+            }
+
+            GenerateChild(parentIndex, index < parentIndex, index);
+            UpdatePositions();
+        }
+    }
+
+    public void ClearTree()
+    {
+        indexToNode.Clear();
+        nodesData.Clear();
+        indexToData.Clear();
+        while (transform.childCount > 0)
+        {
+            DestroyImmediate(transform.GetChild(0).gameObject);
+        }
+
+        root = -1;
     }
 
     #endregion
@@ -476,13 +583,6 @@ public class TreeManager : MonoBehaviour
         }
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private string DFS_string(int index)
     {
         if (index == -1)
@@ -495,4 +595,13 @@ public class TreeManager : MonoBehaviour
             rightStr = $"[{rightStr}]";
         return $"{index}{leftStr} {rightStr}";
     }
+
+}
+
+public interface TreeViewer
+{
+    public int GetRoot();
+
+    public NodeData GetNode(int index);
+
 }

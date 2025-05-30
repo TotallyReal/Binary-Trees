@@ -12,15 +12,16 @@ public class Node : MonoBehaviour
     [SerializeField]
     private TextMeshPro label;
     [SerializeField]
-    private NodeData data;
+    private int index;
 
-    public int Index {
-        get => data.index;
+    internal void SetIndex(int index)
+    {
+        this.index = index;
     }
 
-    internal void SetData(NodeData data)
+    internal int GetIndex()
     {
-        this.data = data;
+        return index;
     }
 
 

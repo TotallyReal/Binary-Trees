@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.totallyreal.mousecontrol": "file:C:/Users/eofir/Unity Projects/Nets/Assets/CustomPackages/MouseControl",
+    "com.totallyreal.mousecontrol": "file:C:/Users/eofir/Unity Projects/Utilities/Assets/MouseControl",
     "com.unity.collab-proxy": "2.8.2",
     "com.unity.feature.2d": "2.0.1",
     "com.unity.ide.rider": "3.0.28",
