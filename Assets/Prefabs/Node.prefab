@@ -323,6 +323,7 @@ MonoBehaviour:
   edgeToParent: {fileID: 6041758383400839328}
   label: {fileID: 6623136706513167014}
   index: 0
+  spriteRenderer: {fileID: 8617645600876223879}
 --- !u!1 &1927118069713263057
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +359,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 3, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6100903420225202243
 MeshRenderer:
@@ -422,7 +423,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

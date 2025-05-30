@@ -13,6 +13,8 @@ public class Node : MonoBehaviour
     private TextMeshPro label;
     [SerializeField]
     private int index;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
     internal void SetIndex(int index)
     {
@@ -52,5 +54,10 @@ public class Node : MonoBehaviour
     internal void SetLabel(string text)
     {
         label.text = text;
+    }
+
+    public void MarkColor(Color color)
+    {
+        spriteRenderer.color = color;
     }
 }

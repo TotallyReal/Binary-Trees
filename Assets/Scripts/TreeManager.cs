@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 [Serializable]
 public class NodeData
@@ -82,9 +83,19 @@ public class TreeManager : MonoBehaviour, TreeViewer
         return root;
     }
 
-    public NodeData GetNode(int index)
+    public NodeData GetNodeData(int index)
     {
         return indexToData[index];
+    }
+
+    public Node GetNode(int index)
+    {
+        return indexToNode[index];
+    }
+
+    public int Size()
+    {
+        return indexToNode.Count;
     }
 
     #region =================== Rotation ===================
@@ -119,7 +130,10 @@ public class TreeManager : MonoBehaviour, TreeViewer
     private bool inRotation = false;
     private RotationData rotationData;
 
-    public event EventHandler<TreeViewer> OnTreeChanged; 
+    public event EventHandler<TreeViewer> OnTreeRotated;
+    public UnityEvent<TreeViewer> UOnTreeRotated;
+    public event EventHandler<TreeViewer> OnTreeChanged;
+    public UnityEvent<TreeViewer> UOnTreeChanged;
 
     private RotationData CreateRotationData(int index)
     {
@@ -229,7 +243,8 @@ public class TreeManager : MonoBehaviour, TreeViewer
                         root = rotationData.childIndex;
 
                     inRotation = false;
-                    OnTreeChanged?.Invoke(this, this);
+                    OnTreeRotated?.Invoke(this, this);
+                    UOnTreeRotated?.Invoke(this);
                 });
 
         return rotationData;
@@ -386,6 +401,8 @@ public class TreeManager : MonoBehaviour, TreeViewer
         GenerateSubTree(root, -1, true);
 
         UpdatePositions();
+        OnTreeChanged?.Invoke(this, this);
+        UOnTreeChanged?.Invoke(this);
     }
 
     private void GenerateChild(int parentIndex, bool left, int childIndex)
@@ -473,6 +490,8 @@ public class TreeManager : MonoBehaviour, TreeViewer
             GenerateChild(parentIndex, index < parentIndex, index);
             UpdatePositions();
         }
+        OnTreeChanged?.Invoke(this, this);
+        UOnTreeChanged?.Invoke(this);
     }
 
     public void ClearTree()
@@ -602,6 +621,9 @@ public interface TreeViewer
 {
     public int GetRoot();
 
-    public NodeData GetNode(int index);
+    public NodeData GetNodeData(int index);
 
+    public Node GetNode(int nodeIndex);
+
+    public int Size();
 }
