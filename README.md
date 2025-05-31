@@ -17,8 +17,10 @@ This is a very early version — just the bare bones for now:
    - You can perform standard **left** and **right rotations** to balance the tree, just like in AVL trees.
 
 3. **The Goal (for now)**
-   - Make the tree **balanced**, using as **few rotations** and as **little time** as possible.
-   - A tree is considered **well-balanced** if **each node’s children subtrees differ in height by at most 1**.
+   - Make the tree **well-balanced**, using as **few rotations** and as **little time** as possible.
+   - A node is called **balanced** if **its left and right subtree's height differ by at most 1**.
+   - A tree is considered **well-balanced** if **all of its nodes are balanced**.
+   - Unbalanced nodes are marked in red.
 
 ## 📸 Screenshot
 
