@@ -28,7 +28,7 @@ This is a very early version — just the bare bones for now:
 
 ## 🔗 Play the Game
 
-- **Game Page**: [Play it here](https://totallyreal.github.io/Binary-Trees/webgl/)
+- **Game Page**: [Play it here](https://totallyreal.github.io/Binary-Trees/webgl_nosound/)
 - **Project Page**: [Main repository site](https://github.com/TotallyReal/Binary-Trees),  [Github Pages site](https://totallyreal.github.io/Binary-Trees/)
 
 ## 💬 Feedback
