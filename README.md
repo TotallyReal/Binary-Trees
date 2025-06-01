@@ -14,7 +14,7 @@ This is a very early version — just the bare bones for now:
    - This color scheme reflects how **binary search** works.
 
 2. **Tree Rotations**
-   - You can perform standard **left** and **right rotations** to balance the tree, just like in AVL trees.
+   - Pressing the nodes, you can perform standard **tree rotations** (node always moves inwards) to balance the tree, just like in AVL trees.
 
 3. **The Goal (for now)**
    - Make the tree **well-balanced**, using as **few rotations** and as **little time** as possible.
@@ -28,7 +28,7 @@ This is a very early version — just the bare bones for now:
 
 ## 🔗 Play the Game
 
-- **Game Page**: [Play it here](https://totallyreal.github.io/Binary-Trees/webgl_nosound/)
+- **Game Page**: [Play it here](https://totallyreal.github.io/Binary-Trees/webgl/)
 - **Project Page**: [Main repository site](https://github.com/TotallyReal/Binary-Trees),  [Github Pages site](https://totallyreal.github.io/Binary-Trees/)
 
 ## 💬 Feedback
