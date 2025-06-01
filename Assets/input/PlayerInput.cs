@@ -37,6 +37,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""PointerPosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""5b682078-73ef-4e34-bcf5-71f47bc7cbca"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Zoom"",
                     ""type"": ""PassThrough"",
                     ""id"": ""afa04765-1fa0-47d0-8f10-38a2f21ddd71"",
@@ -77,6 +86,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""452c12d1-ae05-457c-b4ac-cd1e66f3e1e7"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -156,6 +176,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_PointerSelect = m_Player.FindAction("PointerSelect", throwIfNotFound: true);
+        m_Player_PointerPosition = m_Player.FindAction("PointerPosition", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
@@ -224,12 +245,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_PointerSelect;
+    private readonly InputAction m_Player_PointerPosition;
     private readonly InputAction m_Player_Zoom;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @PointerSelect => m_Wrapper.m_Player_PointerSelect;
+        public InputAction @PointerPosition => m_Wrapper.m_Player_PointerPosition;
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -243,6 +266,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @PointerSelect.started += instance.OnPointerSelect;
             @PointerSelect.performed += instance.OnPointerSelect;
             @PointerSelect.canceled += instance.OnPointerSelect;
+            @PointerPosition.started += instance.OnPointerPosition;
+            @PointerPosition.performed += instance.OnPointerPosition;
+            @PointerPosition.canceled += instance.OnPointerPosition;
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
@@ -253,6 +279,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @PointerSelect.started -= instance.OnPointerSelect;
             @PointerSelect.performed -= instance.OnPointerSelect;
             @PointerSelect.canceled -= instance.OnPointerSelect;
+            @PointerPosition.started -= instance.OnPointerPosition;
+            @PointerPosition.performed -= instance.OnPointerPosition;
+            @PointerPosition.canceled -= instance.OnPointerPosition;
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
@@ -338,6 +367,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnPointerSelect(InputAction.CallbackContext context);
+        void OnPointerPosition(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
     }
     public interface ITouchActions

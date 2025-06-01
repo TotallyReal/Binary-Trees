@@ -24,7 +24,7 @@ This is a very early version — just the bare bones for now:
 
 ## 📸 Screenshot
 
-![balanced tree](Documentation/balanced_tree_15.png)
+![balanced tree](Documentation/balanced_tree_31.png)
 
 ## 🔗 Play the Game
 

@@ -15,6 +15,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "PointerPosition",
+                    "type": "Value",
+                    "id": "5b682078-73ef-4e34-bcf5-71f47bc7cbca",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Zoom",
                     "type": "PassThrough",
                     "id": "afa04765-1fa0-47d0-8f10-38a2f21ddd71",
@@ -55,6 +64,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "452c12d1-ae05-457c-b4ac-cd1e66f3e1e7",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
