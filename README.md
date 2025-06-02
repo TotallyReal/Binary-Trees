@@ -34,6 +34,7 @@ This is a very early version — just the bare bones for now:
 ## 💬 Feedback
 
 Got ideas or suggestions? I’d love to hear them! This is a small side project — feedback, bugs, or feature requests are welcome.
+- Right now, it doesn't recieve touch input, so it can only played with a mouse.
 
 ## 📇 Contact
 
